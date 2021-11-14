@@ -39,16 +39,8 @@ const Schedules = () => {
 
     return (
         <>
-        {
-            setTimeout(() => {
-                return (
-                    <>
-                        <AllCards schedules={schedulesData}/>
-                        <BottomBar />
-                    </>
-                )
-            }, 500)
-        }
+            <AllCards schedules={schedulesData}/>
+            <BottomBar />
         </>
     );
 
