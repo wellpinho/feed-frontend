@@ -1,0 +1,6 @@
+.default { background-color: #949090 }
+.pending { background-color: #faffb9 }
+.scheduled { background-color: #6985a3 }
+.fulfilled { background-color: #58E515 }
+.unfulfilled { background-color: #c0908d }
+.cancelled { background-color: #949090 }

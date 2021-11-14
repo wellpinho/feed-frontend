@@ -1,0 +1,13 @@
+body {
+    background-color: #f3f5f4;
+    padding-top: 2rem;
+}
+h2 {
+    font-size: 60px;
+    font-weight: 600;
+    color: #444444;
+    letter-spacing: .4rem;
+}
+p {
+    margin: 1rem 0 .3rem 0;
+}
