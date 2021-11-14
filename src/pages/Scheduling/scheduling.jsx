@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import { useParams } from "react-router-dom";
 import api from "../../services/api";
 import "./schedule.css";
 
 const Scheduling = () => {
-  const { id } = useParams()
+  const { id } = useParams();
   const [date, setDate] = useState(new Date().toISOString().split(".")[0]);
   const [message, setMessage] = useState("");
   const [option, setOption] = useState();
@@ -16,7 +16,8 @@ const Scheduling = () => {
   const [topics, setTopics] = useState([]);
   const [selTopics, setSelTopics] = useState([]);
   const [link, setLink] = useState("");
-  const [isAlert, setIsAlert] = useState(false);
+  const [isAlertError, setIsAlertError] = useState(false);
+  const [isAlertSuccess, setIsAlertSuccess] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
 
   const fetchUsers = useCallback(async () => {
@@ -24,7 +25,7 @@ const Scheduling = () => {
       const response = await api.get("/users");
       const users = response.data.users;
       setEmployees(users);
-      setEmployee(users[0])
+      setEmployee(users[0]);
     } catch (e) {
       console.log(e);
     }
@@ -66,7 +67,7 @@ const Scheduling = () => {
   const fetchScheduling = async () => {
     const isValid =
       date && option && employee && selTopics.length > 0 && message;
-    setIsAlert(!isValid);
+    setIsAlertError(!isValid);
 
     if (!isValid) {
       const altMessage = !date
@@ -82,14 +83,21 @@ const Scheduling = () => {
         : "";
 
       setAlertMessage(altMessage);
+      setTimeout(() => {
+        document.querySelector("#btnsActions").scrollIntoView();
+      }, 100);
       return;
     }
 
     const time = date.split("T")[1];
+    const hours = time.split(":")[0];
+    const minutes = time.split(":")[1];
+    const strTime = hours + ":" + minutes;
+
     const data = {
       type_schedule: option,
       date: date.split("T")[0],
-      hour: time[0] + ":" + time[1],
+      hour: strTime,
       state: "pending",
       topics: selTopics,
       description: message,
@@ -98,15 +106,32 @@ const Scheduling = () => {
     };
 
     try {
-      setIsAlert(false);
+      setIsAlertError(false);
       const response = await api.post("/schedules", data);
+
       if (response.data.message) {
         setAlertMessage(response.data.message);
-        setIsAlert(true);
+        setIsAlertError(true);
+      } else {
+        setIsAlertSuccess(true);
+
+        setTimeout(() => {
+          setIsAlertSuccess(false);
+          window.history.back();
+        }, 3000);
+
+        setTimeout(() => {
+          document.querySelector("#btnsActions").scrollIntoView();
+        }, 100);
       }
     } catch (e) {
       console.log(e);
+    } finally {
     }
+  };
+
+  const fetchCancel = () => {
+    window.history.back();
   };
 
   return (
@@ -154,7 +179,9 @@ const Scheduling = () => {
             onChange={(evt) => setEmployee(evt.target.value)}
           >
             {employees.map((e) => (
-              <option key={e._id} value={e._id}>{e.name}</option>
+              <option key={e._id} value={e._id}>
+                {e.name}
+              </option>
             ))}
           </Form.Control>
         </div>
@@ -201,14 +228,19 @@ const Scheduling = () => {
         </Form.Group>
       </div>
 
-      {isAlert && (
+      {isAlertError && (
         <Alert className="mt-3" key={"alertScheduling"} variant="danger">
-          {/* Preencha todos os campos. */}
           {alertMessage}
         </Alert>
       )}
 
-      <div className="mb-3">
+      {isAlertSuccess && (
+        <Alert className="mt-3" key={"alertScheduling"} variant="success">
+          Agendamento realizado com sucesso!
+        </Alert>
+      )}
+
+      <div className="mb-3" id="btnsActions">
         <Button
           size="sm"
           variant="outline-primary"
@@ -217,7 +249,12 @@ const Scheduling = () => {
         >
           Agendar
         </Button>
-        <Button size="sm" variant="outline-danger" className="me-1">
+        <Button
+          size="sm"
+          variant="outline-danger"
+          className="me-1"
+          onClick={fetchCancel}
+        >
           Cancelar
         </Button>
       </div>

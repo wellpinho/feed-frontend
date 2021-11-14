@@ -3,9 +3,9 @@ import "./Card.css";
 const formatDateCustom = (arg) => {
     const date = new Date(arg)
     const day = date.getDate().toString()
-    const dayF = (day.length == 1) ? '0' + day : day
+    const dayF = (day.length === 1) ? '0' + day : day
     const month = (date.getMonth() + 1).toString()
-    const monthF = (month.length == 1) ? '0' + month : month
+    const monthF = (month.length === 1) ? '0' + month : month
     const yearF = date.getFullYear();
 
     return dayF + "/" + monthF + "/" + yearF;
@@ -27,7 +27,7 @@ const Card = (props) => {
             <div class="card-body">
                 <h5 class="card-text">{formatDateCustom(props.date) + ' ' + props.hour}</h5>
                 <p class="card-title">{props.type}</p>
-                <a href={"/scheduling/" + props.person} class="btn btn-primary">Ver Mais ></a>
+                <a href={"/scheduling/" + props.person} class="btn btn-primary">Ver Mais</a>
             </div>
         </div>
     )
