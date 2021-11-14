@@ -4,6 +4,7 @@ import NotFound from "./pages/404";
 import Login from "./pages/Login/login";
 import Rating from "./pages/Rating/rating";
 import Schedules from "./pages/Schedules/schedules";
+import Person from "./components/schedules/Person.feed";
 import Scheduling from "./pages/Scheduling/scheduling";
 
 export default function AppRoutes() {
@@ -15,6 +16,7 @@ export default function AppRoutes() {
         <Route path="/schedules" element={<Schedules />} />
         <Route path="/scheduling" element={<Scheduling />} />
         <Route path="/scheduling/:id" element={<Scheduling />} />
+        <Route path="/person/:id" element={<Person />} />
         <Route path="/rating" element={<Rating />} />
         <Route element={<NotFound />} />
       </Routes>

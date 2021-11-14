@@ -21,13 +21,14 @@ const stateColor = {
 // person, date, hour, type, state
 const Card = (props) => {
     const color = !props.state ? 'default' : props.state
+    console.log(props.person)
 
     return (
         <div class={`card card-default ${color}`} >
             <div class="card-body">
                 <h5 class="card-text">{formatDateCustom(props.date) + ' ' + props.hour}</h5>
                 <p class="card-title">{props.type}</p>
-                <a href={"/scheduling/" + props.person} class="btn btn-primary">Ver Mais</a>
+                <a href={"/person/" + props.person} class="btn btn-primary">Ver Mais</a>
             </div>
         </div>
     )

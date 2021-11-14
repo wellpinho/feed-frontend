@@ -7,7 +7,7 @@ const AllCards = (schedules) => {
             <h2 className="mt-3 text-center">Ahfeed</h2>
             <h4 className="text-center">Cerimônias inteligentes</h4>
 
-            <div class="row row-cols-1 row-cols-md-3 mt-5">
+            <div className="row row-cols-1 row-cols-md-3 mt-5">
  
                     {  !!schedules.schedules
                         ? schedules.schedules.map((schedule) => {
